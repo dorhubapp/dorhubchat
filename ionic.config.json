@@ -1,0 +1,7 @@
+{
+  "name": "dorhub-chat",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
