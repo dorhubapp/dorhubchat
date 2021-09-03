@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar mode="ios" color="primary">
+    <ion-title>
+      People
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-label *ngIf="user">{{ user.username }}</ion-label>
+      <ion-icon size="large" name="log-in" (click)="login()"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item button *ngFor="let person of people" (click)="viewPerson(person)">
+      {{ person.username }}
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar mode="md" color="primary">
+    <ion-title>
+      Chats
+    </ion-title>
+    <ion-label slot="end">{{ userName }}</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item *ngFor="let chat of chats">
+      <ion-thumbnail slot="start">
+        <ion-img [src]="imgUrl + 'thumb_' + chat.receiver_id.profile_photo"></ion-img>
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ chat.receiver_id.username }}</h2>
+        <ion-note class="small">
+          {{ chat.message_id.message.length > 0 ? chat.message_id.message[chat.message_id.message.length - 1].body : '' }}
+        </ion-note>
+      </ion-label>
+      <ion-icon *ngIf="chat.request_status === 0" name="thumbs-up" slot="end"
+        (click)="accept(chat.receiver_id._id, chat.message_id._id)">
+      </ion-icon>
+      <ion-icon *ngIf="chat.request_status === 0" name="thumbs-down" slot="end"
+        (click)="decline(chat.receiver_id._id, chat.message_id._id)"></ion-icon>
+      <ion-icon *ngIf="chat.request_status === 1" name="chatbubble" slot="end" (click)="openChat(chat)"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

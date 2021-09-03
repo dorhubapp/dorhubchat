@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="tabs/tab3"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Manage Photos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding ion-text-center">
+    To greatly improve your first impression, please use photos that are head
+    shots with you facing the camera and looking radiant!
+  </div>
+  <div [hidden]=ishidden>
+    <image-cropper [imageBase64]="photoPreview" [maintainAspectRatio]="true" [aspectRatio]="1 / 1" format="jpg"
+      (imageCropped)="imageCropped($event)">
+    </image-cropper>
+  </div>
+
+  <div class="ion-padding ion-text-center" *ngIf="croppedImage">
+    <ion-icon (click)="clearPreview()" class="icon-size ion-margin-end" button name="close-circle-sharp" color="danger">
+    </ion-icon>
+    <ion-icon (click)="uploadPicture()" class="icon-size ion-margin-start" button name="checkmark-circle-sharp"
+      color="secondary">
+    </ion-icon>
+  </div>
+  <ion-grid>
+    <ion-row *ngIf=" contentLoaded">
+      <ion-col size-xs="4" size-sm="3" size-md="3" size-lg="2" size-xl="2" *ngFor="let data of profilePhotos">
+        <ion-img [src]="(data.photo == 'default.jpg') ? imgUrl + data.photo : imgUrl + 'thumb_' + data.photo"
+          class="scout-img"></ion-img>
+        <div class="myOverlay">
+          <ion-row>
+            <ion-col size="6">
+              <ion-icon color="medium" name="person-add" size="large" (click)="setProfilePicture(data.photo)">
+              </ion-icon>
+            </ion-col>
+
+            <ion-col size="6" class="ion-text-right">
+              <ion-icon color="secondary" name="camera" size="large" (click)="takePicture(data)"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

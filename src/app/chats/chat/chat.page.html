@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar color="primary" mode="ios" *ngIf="userData">
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="tabs/chats"></ion-back-button>
+    </ion-buttons>
+    <ion-avatar margin>
+      <img [src]="receiverAvatar" />
+    </ion-avatar>
+    <ion-title slot="start">
+      <ion-icon color="{{ isOnline && !typing ? 'success' : 'light' }}" name="radio-button-on"></ion-icon>
+      {{ userData.username }}
+      <small *ngIf="typing">is typing...</small>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-icon size="large" name="ellipsis-vertical" (click)="presentPopover($event)"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content #content>
+  <div class="message-wrap">
+    <div *ngFor="let msg of chatMessages" class="message"
+      [class.left]="msg.sender_id._id !== localData._id && localData._id !== userData._id"
+      [class.right]=" msg.sender_id._id === localData._id">
+      <img *ngIf="msg.sender_id._id !== localData._id" class="user-img" [src]="receiverAvatar" />
+      <div class="msg-detail">
+        <div class="msg-content">
+          <span class="triangle"></span>
+          <p class="line-breaker text-select" *ngIf="msg.file === false">
+            {{ msg.body }}</p>
+          <ion-img (click)="showPhoto(msg.body)" *ngIf="msg.file === true" [src]="sharedImgUrl + msg.body">
+          </ion-img>
+          <small><i>{{ msg.created_at | date:'short' }}</i></small>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-padding">
+  <ion-item class="send-message-area" lines="none">
+    <ion-icon *ngIf="!toggledUpload" name="add-outline" (click)="toggledUpload = !toggledUpload" size="large"
+      color="primary">
+    </ion-icon>
+    <ion-icon *ngIf="toggledUpload" name="close-outline" (click)="toggledUpload = !toggledUpload" size="large"
+      color="primary">
+    </ion-icon>
+    <ion-icon class="suffix-icon" name="happy-outline" (click)="openEmoji()" size="large" color="medium">
+    </ion-icon>
+    <ion-textarea rows="1" class="input-box" type="text" placeholder="Write a message..." [(ngModel)]="userInput"
+      (keyup.enter)="sendMsg()" (keypress)="isTyping()">
+    </ion-textarea>
+    <ion-icon name="send-sharp" (click)="sendMsg()" size="large" expand="icon-only" color="primary"></ion-icon>
+  </ion-item>
+  <!-- <ngx-emoj *ngIf="toggled" (onemojipick)="handleEmoji($event)" (onchardelete)="handleCharDelete($event)"
+    [width]="'100vw'" [height]="'30vh'" [theme]="{martShowHeader: showHeader, martShowFooter: showFooter, martHeaderPadding: {x: x1+'px', y: y1+'px'},
+      martFooterPadding: {x: x2+'px', y: y2+'px'},
+      martHeaderBG: martHeaderBG,
+      martFooterBG: martFooterBG,
+      martBG: martBGcolor,
+      martCategoryColor: martCategoryColor,
+      martCategoryColorActive:  martCategoryColorActive,
+      martActiveCategoryIndicatorColor: martActiveCategoryIndicatorColor,
+      martEmojiFontSize: martEmojiFontSize+'%',
+      martCategoryFontSize: martCategoryFontSize+'px',
+      martBorderRadius: martBorderRadius+'px',
+      martActiveCategoryIndicatorHeight: martActiveCategoryIndicatorHeight+'px',
+      martEmojiPadding: {x: x3+'px', y: y3+'px'}}">
+  </ngx-emoj> -->
+  <div *ngIf="toggledUpload">
+    <ion-row class="ion-padding ion-margin">
+      <ion-col class="ion-text-center">
+        <div class="rounded mb-10">
+          <ion-icon size="large" (click)="takePicture()" color="primary" button name="camera-outline"></ion-icon>
+        </div>
+        <ion-text class="mr-15">Camera</ion-text>
+      </ion-col>
+      <ion-col class="ion-text-center">
+        <div class="rounded mb-10">
+          <ion-icon size="large" (click)="loadPicture()" color="tint" button name="image-outline"></ion-icon>
+        </div>
+        <ion-text class="mr-15">Photos</ion-text>
+      </ion-col>
+      <ion-col class="ion-text-center">
+        <div class="rounded mb-10">
+          <ion-icon size="large" (click)="voiceRecording()" color="primary" button name="mic-outline"></ion-icon>
+        </div>
+        <ion-text class="mr-15">Voice</ion-text>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-footer>

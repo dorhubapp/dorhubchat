@@ -7,11 +7,23 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <canvas #imageCanvas></canvas>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let item of templates" (click)="setBackground(item.src)">
+        <img [src]="imgSrc + item.src" />
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-button expand="full" (click)="exportCanvasImage()">
+    <ion-icon slot="start" name="download"></ion-icon>
+    Share Profile
+  </ion-button>
+
+  <ion-button color="secondary" expand="full" [routerLink]="[ '/profile' ]">
+    <ion-icon slot="start" name="download"></ion-icon>
+    Open Profile
+  </ion-button>
 </ion-content>
